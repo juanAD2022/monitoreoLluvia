@@ -1,0 +1,57 @@
+GUÍA PRÁCTICA: DESARROLLO WEB INTERACTIVO (HTML, CSS Y JAVASCRIPT)
+1. Conceptos Fundamentales del Desarrollo Web
+Para crear aplicaciones web interactivas combinamos tres tecnologías clave que trabajan juntas:
+• HTML (Estructura): Es el lenguaje encargado de estructurar el contenido de la página web mediante etiquetas (como 
+contenedores, campos de texto, botones y áreas de dibujo). Define el esqueleto y los elementos visibles.
+• CSS (Estilo y Apariencia): Es el lenguaje de estilos que da diseño, colores, tipografías, márgenes y distribución visual a los 
+elementos de HTML.
+• JavaScript (Lógica e Interactividad): Es el lenguaje de programación que otorga interactividad, lógica, validaciones, control de 
+sesiones, cálculos matemáticos y manipulación de gráficas dinámicas.
+2. Tabla de Comandos y Estructuras Útiles en JavaScript
+A continuación se presenta una guía rápida de referencia con los comandos fundamentales en JavaScript para declaración de 
+variables, manipulación del DOM y eventos:
+Categoría / Función Comando / Sintaxis Descripción y Uso Práctico
+Declaración de Variables let nombre = valor;
+const ESTANDAR_CALI = 14;
+Define variables cuyo valor puede cambiar 
+(let) o constantes fijas (const).
+Capturar Valor del DOM document.getElementById('id').value; Obtiene el texto o número digitado por el 
+usuario en un campo de entrada.
+Modificar Contenido HTML document.getElementById('res').innerH
+TML = texto;
+Actualiza dinámicamente el contenido visual 
+dentro de una etiqueta HTML.
+Ocultar / Mostrar Elementos elemento.classList.add('oculto');
+.classList.remove('oculto');
+Agrega o quita clases CSS para alternar la 
+visibilidad de contenedores (login / panel).
+Ventanas de Interacción let dato = prompt('Mensaje');
+alert('Alerta');
+Muestra cuadros de diálogo flotantes para 
+solicitar datos o informar al usuario.
+3. Caso de Estudio: Sistema de Monitoreo de Lluvia y Precipitación
+Diseña una aplicación web interactiva que permita registrar y controlar los datos meteorológicos de lluvia en zonas específicas, 
+aplicando autenticación segura, validaciones horarias, cálculo de precipitaciones frente al estándar de Cali, registro continuo y 
+gráficas estadísticas.
+Requerimientos del Sistema:
+1. Login de Acceso:
+• El sistema inicia solicitando usuario y contraseña. Solo son válidos el usuario 'CVC' y la contraseña 'Lluvias'. Si los 
+datos son correctos, se oculta el login y se muestra el panel principal.
+2. Registro de Lluvia y Cálculos Meteorológicos:
+• En la interfaz principal se solicitan los datos: Dirección de la zona, Hora de inicio de la lluvia, Hora de fin de la Lluvia, 
+cantidad de precipitación registrada en milímetros (mm) y nombre del usuario que registra.
+• El estándar de precipitación en Cali es de 14 mm. El sistema debe comparar el valor registrado frente a este 
+estándar y mostrar el resultado en pantalla, generando un efecto tipo reloj antes de cargar el dato, dado por cantidad 
+de precipitacion * estandar * tiempo total.
+3. Registro Continuo con Clave de Seguridad ('CLIMA'):
+• Al terminar el registro, se solicita mediante una ventana de diálogo la palabra clave 'CLIMA'. Si el usuario escribe 
+exactamente 'CLIMA', el sistema limpia los campos para registrar otra zona.
+• Si la palabra digitada es diferente a 'CLIMA', el sistema emite una alerta y devuelve automáticamente al usuario al 
+login.
+4. Ajustes por Horario e Intensidad:
+• El sistema debe permitir registrar la duración y hora del evento. Si la lluvia se inicia o registra en horario de alta 
+nubosidad o tarde (por ejemplo, entre las 3:00 p.m. y las 6:00 p.m.), se puede contemplar un factor de ajuste en el 
+calculo del 5.3%
+5. Gráfica y Captura de Foto de la Zona:
+• Cada registro de precipitación se almacena en un arreglo y se dibuja dinámicamente en una gráfica de barras
+• Se incluye además un componente visual o botón para la captura de una foto de la zona afectada para el reporte.

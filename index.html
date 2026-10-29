@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoreo de Lluvia | CVC</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main id="login-view" class="login-layout">
+    <section class="login-intro">
+      <div class="brand brand-light"><span class="brand-mark">⌇</span><strong>CVC</strong></div>
+      <div class="intro-copy">
+        <h1>Sistema de Monitoreo<br />de Lluvia</h1>
+        <p>Registra la precipitación por zona y compárala con el estándar de Cali.</p>
+      </div>
+      <div class="intro-features">
+        <span>Estándar Cali · 14 mm</span>
+        <span>Registro por zona</span>
+        <span>Gráfica de precipitación</span>
+      </div>
+    </section>
+    <section class="login-panel">
+      <form id="login-form" class="card login-card">
+        <p class="eyebrow">ACCESO AL SISTEMA</p>
+        <h2>Iniciar sesión</h2>
+        <p class="muted">Ingresa tus credenciales para abrir el panel.</p>
+        <label for="login-user">Usuario</label>
+        <input id="login-user" name="user" placeholder="Tu usuario" autocomplete="username" required />
+        <label for="login-password">Contraseña</label>
+        <input id="login-password" name="password" type="password" placeholder="Tu contraseña"
+          autocomplete="current-password" required />
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button class="button button-primary button-full" type="submit">Ingresar</button>
+        <p class="helper-text">Si los datos son correctos, se oculta esta pantalla y se muestra el panel principal.</p>
+      </form>
+    </section>
+  </main>
+
+  <div id="app-view" class="app-shell hidden">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">⌇</span><strong>Monitoreo de Lluvia</strong><span
+          class="brand-tag">CVC</span></div>
+      <div class="session-actions"><span>Sesión: <strong>CVC</strong></span><button id="view-records-button"
+          class="button button-outline">Registros</button><button id="logout-button"
+          class="button button-outline">Cerrar sesión</button></div>
+    </header>
+
+    <section id="register-view" class="page-view page-grid">
+      <form id="rain-form" class="card register-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">NUEVO REGISTRO</p>
+            <h2>Registrar lluvia de una zona</h2>
+            <p class="muted">Completa los datos del evento. Los valores se guardan en memoria.</p>
+          </div>
+        </div>
+        <label for="zone-address">Dirección de la zona</label>
+        <input id="zone-address" name="address" placeholder="Ej. Zona 1 · Cra 1 # 10-20" required />
+        <div class="form-row">
+          <div><label for="rain-start">Hora de inicio de la lluvia</label><input id="rain-start" name="start"
+              type="time" required /></div>
+          <div><label for="rain-end">Hora de fin de la lluvia</label><input id="rain-end" name="end" type="time"
+              required /></div>
+        </div>
+        <div class="form-row">
+          <div><label for="rainfall">Precipitación registrada (mm)</label><input id="rainfall" name="rainfall"
+              type="number" min="0" step="0.01" placeholder="Ej. 22" required /></div>
+          <div><label for="operator">Usuario que registra</label><input id="operator" name="operator"
+              placeholder="Nombre del operador" required /></div>
+        </div>
+        <div class="photo-picker">
+          <div class="photo-copy"><span class="camera-icon">▣</span>
+            <div><strong>Foto de la zona afectada</strong><span id="photo-status">Sin foto capturada</span></div>
+          </div>
+          <label class="button button-outline file-button" for="photo-input">Capturar foto</label>
+          <input id="photo-input" type="file" accept="image/*" capture="environment" hidden />
+        </div>
+        <p id="form-error" class="form-error" role="alert"></p>
+        <div class="form-actions"><button id="clear-button" class="button button-outline"
+            type="button">Limpiar</button><button class="button button-primary" type="submit">Calcular y
+            registrar</button></div>
+      </form>
+      <aside class="side-stack">
+        <div class="card standard-card">
+          <p class="eyebrow">ESTÁNDAR DE CALI</p>
+          <div class="standard-value">14 <small>mm</small>
+          </div>
+          <p class="muted">Se compara contra la precipitación registrada.</p>
+        </div>
+        <div class="card schedule-card">
+          <div class="card-title-row">
+            <h3>Ajuste por horario</h3><span class="badge">+5,3 %</span>
+          </div>
+          <p class="muted">Si la lluvia inicia entre 3:00 y 6:00 p. m. (alta nubosidad) se suma al cálculo.</p>
+          <div class="time-track"><span class="track-range"></span><span id="schedule-marker"
+              class="track-marker"></span></div>
+          <div class="time-labels"><span>12:00</span><span>15:00</span><span>18:00</span><span>21:00</span></div>
+          <p id="schedule-message" class="schedule-message">El ajuste se calcula al registrar el evento.</p>
+        </div>
+        <div class="formula-box">
+          <p class="eyebrow">FÓRMULA</p><code>precipitación × estándar × tiempo total</code>
+        </div>
+      </aside>
+    </section>
+
+    <section id="result-view" class="page-view result-grid hidden">
+      <div class="card clock-card">
+        <p class="eyebrow">PASO 1 · EFECTO RELOJ</p>
+        <div class="clock"><span class="clock-hand clock-hand-hour"></span><span
+            class="clock-hand clock-hand-minute"></span><span class="clock-center"></span><i
+            class="tick tick-top"></i><i class="tick tick-right"></i><i class="tick tick-bottom"></i><i
+            class="tick tick-left"></i></div>
+        <h2>Calculando…</h2>
+        <p id="clock-counter" class="clock-counter">00:00 / 00:03</p>
+        <p class="muted">Animación breve antes de mostrar el dato calculado.</p>
+      </div>
+      <div class="card result-card">
+        <div class="result-heading">
+          <div>
+            <p class="eyebrow">PASO 2 · RESULTADO</p>
+            <h2 id="result-zone">Zona registrada</h2>
+          </div>
+          <p id="result-meta" class="muted"></p>
+        </div>
+        <div id="result-summary" class="result-summary"><strong id="result-rainfall">0 mm</strong>
+          <div><strong id="result-comparison">En el estándar</strong><span id="result-percent">100 % del estándar de
+              Cali (14 mm)</span></div>
+        </div>
+        <dl class="calculation-list">
+          <div>
+            <dt>Precipitación registrada</dt>
+            <dd id="detail-rainfall">0 mm</dd>
+          </div>
+          <div>
+            <dt>Estándar de Cali</dt>
+            <dd>14 mm</dd>
+          </div>
+          <div>
+            <dt>Tiempo total</dt>
+            <dd id="detail-duration">0 h</dd>
+          </div>
+          <div>
+            <dt id="detail-formula-label">0 × 14 × 0</dt>
+            <dd id="detail-base">0,00</dd>
+          </div>
+          <div id="adjustment-row">
+            <dt id="detail-adjustment">Ajuste horario</dt>
+            <dd id="detail-adjustment-value">+0,00</dd>
+          </div>
+          <div class="total-row">
+            <dt>Total calculado</dt>
+            <dd id="detail-total">0,00</dd>
+          </div>
+        </dl><button id="finish-button" class="button button-primary" type="button">Finalizar registro</button>
+      </div>
+    </section>
+
+    <section id="dashboard-view" class="page-view dashboard-grid hidden">
+      <div class="card chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">HISTORIAL EN MEMORIA</p>
+            <h2>Precipitación por zona</h2>
+            <p class="muted">Un registro por barra. Los datos se perderán al recargar.</p>
+          </div>
+          <div class="legend"><span><i class="legend-high"></i>Sobre el estándar</span><span><i
+                class="legend-low"></i>En o bajo el estándar</span></div>
+        </div>
+        <div id="chart" class="chart" aria-label="Gráfica de precipitación por zona"></div><button
+          id="new-record-button" class="button button-primary chart-action" type="button">Registrar otra zona</button>
+      </div>
+      <aside class="side-stack">
+        <div class="card preview-card">
+          <h3>Foto de la zona afectada</h3>
+          <div id="photo-preview" class="photo-preview"><span class="camera-icon">▣</span><span>Sin foto
+              registrada</span></div><label class="button button-outline button-full file-button"
+            for="dashboard-photo-input">Capturar foto</label><input id="dashboard-photo-input" type="file"
+            accept="image/*" capture="environment" hidden />
+        </div>
+        <div class="card saved-card">
+          <h3>Registros guardados</h3>
+          <div id="saved-records"></div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <div id="security-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="security-title">
+    <div class="modal-card">
+      <p class="eyebrow">AL TERMINAR EL REGISTRO</p>
+      <h2 id="security-title"><span class="lock-icon">▢</span> Clave de seguridad</h2>
+      <p class="muted">El registro de la zona terminó. Escribe la palabra clave para registrar otra zona.</p><label
+        for="security-key">Palabra clave</label><input id="security-key" placeholder="Escríbela exactamente"
+        autocomplete="off" />
+      <p id="security-error" class="form-error" role="alert"></p>
+      <div class="form-actions"><button id="cancel-security" class="button button-outline"
+          type="button">Cancelar</button><button id="confirm-security" class="button button-primary"
+          type="button">Aceptar</button></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>
