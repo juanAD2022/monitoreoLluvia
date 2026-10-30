@@ -34,4 +34,3 @@ Importante
 La aplicación funciona sin base de datos. Los registros y fotografías se almacenan únicamente en memoria, por lo que se eliminan al recargar o cerrar la página.
 Este proyecto tiene fines académicos y demostrativos. La autenticación utiliza credenciales definidas en el código JavaScript y no debe considerarse un sistema de seguridad para producción.
 
-▣  Plan · GPT-5.6 Luna · 19.1s
